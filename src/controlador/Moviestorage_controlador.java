@@ -33,6 +33,13 @@ public class Moviestorage_controlador implements ActionListener {
             if (username.trim().isEmpty() || password.length == 0) {
                 JOptionPane.showMessageDialog(frm_login, "Both username and password must be filled in.");
             }else {
+                ms_modelo.setUserName(username.trim());
+                ms_modelo.setPassword(new String(password));
+                if (ms_modelo.validUser(ms_modelo)) {
+                    JOptionPane.showConfirmDialog(frm_login, "User Valid");
+                } else {
+                    JOptionPane.showConfirmDialog(frm_login, "Invalid username or password");
+                }
                 Arrays.fill(password, '0');
             }
         }

@@ -32,10 +32,10 @@ public class Conexion {
         }
     }
 //esto es para verificar la conexion
-/*
+
     public static void main(String[] args) {
         Conexion c = new Conexion();
         c.conectar();
     }
-*/
+
 }
