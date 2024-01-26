@@ -6,12 +6,37 @@ import com.mysql.cj.xdevapi.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import vista.Frm_Login;
 
 public class ConsultasMoviestorage extends Conexion {
-    private String userName;
-    private String password;
+
+    private String userName, password, name, lastname, biografia;
     private Frm_Login frm_login;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getBiografia() {
+        return biografia;
+    }
+
+    public void setBiografia(String biografia) {
+        this.biografia = biografia;
+    }
 
     public String getUserName() {
         return userName;
@@ -85,16 +110,16 @@ public class ConsultasMoviestorage extends Conexion {
         this.con = con;
     }
 
-    public boolean validUser(ConsultasMoviestorage ms){
+    public boolean validUser(ConsultasMoviestorage ms) {
         PreparedStatement ps = null;
         Connection con = conectar();
         String sql = "select correo,contrasena from usuarios where correo = ? and contrasena = ? ";
         ResultSet rs = null;
         try {
-           ps = con.prepareStatement(sql);
-           ps.setString(1, ms.getUserName().trim());
-           ps.setString(2, ms.getPassword().trim());
-           rs = ps.executeQuery();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, ms.getUserName().trim());
+            ps.setString(2, ms.getPassword().trim());
+            rs = ps.executeQuery();
             if (rs.next()) {
                 return true;
             }
@@ -110,6 +135,55 @@ public class ConsultasMoviestorage extends Conexion {
             }
         }
     }
-    
-}
 
+    public boolean ExistUser(ConsultasMoviestorage ms) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = conectar();
+        String sql = "select correo from usuarios where correo = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, ms.getUserName().trim());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            System.out.println("EX" + e);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+    }
+
+    public boolean createNewUser(ConsultasMoviestorage ms) {
+        PreparedStatement ps = null;
+        Connection con = conectar();
+        String sql = "insert into usuarios(nombre,apellido,correo,contrasena,biografia) values (?,?,?,?,?);";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, ms.getName().trim());
+            ps.setString(2, ms.getLastname().trim());
+            ps.setString(3, ms.getUserName().trim());
+            ps.setString(4, ms.getPassword().trim());
+            ps.setString(5, ms.getBiografia());
+            ps.execute();
+            return true;
+        } catch (Exception e) {
+            System.out.println("EX" + e);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+    }
+
+}

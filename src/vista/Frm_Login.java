@@ -75,7 +75,7 @@ public class Frm_Login extends javax.swing.JFrame {
                 sidebarMousePressed(evt);
             }
         });
-        Main.add(sidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 50));
+        Main.add(sidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 310, 50));
 
         jl_password.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         jl_password.setForeground(new java.awt.Color(245, 246, 247));
