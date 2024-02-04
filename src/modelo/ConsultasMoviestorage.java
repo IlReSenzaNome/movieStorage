@@ -7,12 +7,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import vista.Frm_Login;
 
 public class ConsultasMoviestorage extends Conexion {
 
     private String userName, password, name, lastname, biografia;
-    private Frm_Login frm_login;
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public String getName() {
         return name;
@@ -52,14 +62,6 @@ public class ConsultasMoviestorage extends Conexion {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Frm_Login getFrm_login() {
-        return frm_login;
-    }
-
-    public void setFrm_login(Frm_Login frm_login) {
-        this.frm_login = frm_login;
     }
 
     public String getBd() {
@@ -113,7 +115,7 @@ public class ConsultasMoviestorage extends Conexion {
     public boolean validUser(ConsultasMoviestorage ms) {
         PreparedStatement ps = null;
         Connection con = conectar();
-        String sql = "select correo,contrasena from usuarios where correo = ? and contrasena = ? ";
+        String sql = "select username,contrasena from usuarios where username = ? and contrasena = ? ";
         ResultSet rs = null;
         try {
             ps = con.prepareStatement(sql);
@@ -140,7 +142,7 @@ public class ConsultasMoviestorage extends Conexion {
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = conectar();
-        String sql = "select correo from usuarios where correo = ?";
+        String sql = "select username from usuarios where username = ?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, ms.getUserName().trim());
@@ -164,7 +166,7 @@ public class ConsultasMoviestorage extends Conexion {
     public boolean createNewUser(ConsultasMoviestorage ms) {
         PreparedStatement ps = null;
         Connection con = conectar();
-        String sql = "insert into usuarios(nombre,apellido,correo,contrasena,biografia) values (?,?,?,?,?);";
+        String sql = "insert into usuarios(nombre,apellido,username,contrasena,biografia) values (?,?,?,?,?);";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1, ms.getName().trim());
@@ -186,4 +188,83 @@ public class ConsultasMoviestorage extends Conexion {
         }
     }
 
+    public int getUserIdFromDatabase(String username) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = conectar();
+        String sql = "SELECT idusuarios FROM usuarios WHERE username = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, username.trim());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("idusuarios");
+            }
+        } catch (SQLException e) {
+            System.out.println("EX" + e);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+        return -1; // return -1 if user not found
+    }
+
+    public Map<String, String> getUserData(int userId) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = conectar();
+        String sql = "SELECT * FROM usuarios WHERE idusuarios = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, userId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Map<String, String> userData = new HashMap<>();
+                userData.put("username", rs.getString("username"));
+                userData.put("password", rs.getString("contrasena"));
+                userData.put("biografia", rs.getString("biografia"));
+                userData.put("nombre", rs.getString("nombre"));
+                userData.put("apellido", rs.getString("apellido"));
+                return userData;
+            }
+        } catch (SQLException e) {
+            System.out.println("EX" + e);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+        return null; // return null if user not found
+    }
+
+    public boolean actualizar(ConsultasMoviestorage ms) {
+        PreparedStatement ps = null;
+        Connection con = conectar();
+        String sql = "UPDATE usuarios SET username = ?, contrasena = ?, biografia = ?, nombre = ?, apellido = ? WHERE idusuarios = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, userName.trim());
+            ps.setString(2, password.trim());
+            ps.setString(3, biografia.trim());
+            ps.setString(4, name.trim());
+            ps.setString(5, lastname.trim());
+            ps.setInt(6, userId);
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println("EX" + e);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+    }
 }

@@ -16,10 +16,10 @@ public class Frm_FormNewUsers extends javax.swing.JFrame {
         TextPrompt password = new TextPrompt("************", txt_passwordField);
         setIconImage(getIconImage());
     }
-
+    
     @Override
-    public Image getIconImage(){
-        Image retvalue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Vista/Resource/icon.png"));
+    public Image getIconImage() {
+        Image retvalue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Vista/Resources/icon.png"));
         return retvalue;
     }
     
@@ -58,6 +58,7 @@ public class Frm_FormNewUsers extends javax.swing.JFrame {
         btn_exit.setForeground(new java.awt.Color(245, 246, 247));
         btn_exit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         btn_exit.setText("X");
+        btn_exit.setToolTipText("close");
         btn_exit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_exit.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -154,15 +155,16 @@ public class Frm_FormNewUsers extends javax.swing.JFrame {
 
         btn_Submit.setBackground(new java.awt.Color(59, 59, 79));
         btn_Submit.setForeground(new java.awt.Color(245, 246, 247));
-        btn_Submit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resource/disquete.png"))); // NOI18N
+        btn_Submit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resources/disquete.png"))); // NOI18N
         btn_Submit.setText("Submit");
         btn_Submit.setBorder(null);
         NewUsers.add(btn_Submit, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 420, 170, 50));
 
         lbl_SingIn.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         lbl_SingIn.setForeground(new java.awt.Color(245, 246, 247));
-        lbl_SingIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resource/flecha-izquierda (1).png"))); // NOI18N
+        lbl_SingIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resources/flecha-izquierda (1).png"))); // NOI18N
         lbl_SingIn.setText("SingIn");
+        lbl_SingIn.setToolTipText("");
         lbl_SingIn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbl_SingInMouseEntered(evt);

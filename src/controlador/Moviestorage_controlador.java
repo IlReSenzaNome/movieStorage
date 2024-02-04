@@ -7,32 +7,31 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
+import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import modelo.ConsultasMoviestorage;
-import vista.Frm_FormNewUsers;
-import vista.Frm_Login;
-import vista.Frm_MovieLibrary;
+import vista.*;
 
 public class Moviestorage_controlador implements ActionListener {
 
+    ImageIcon Imagen[] = new ImageIcon[13];
+    int contador = 0;
     private Frm_Login frm_login;
     private Frm_MovieLibrary frm_movielibrary;
     private ConsultasMoviestorage ms_modelo;
     private Frm_FormNewUsers frm_formNewUsers;
+    private Frm_UserProfile frm_UserProfile;
 
-    public Moviestorage_controlador(Frm_Login frm_Login, Frm_FormNewUsers frm_formNewUsers, Frm_MovieLibrary frm_MovieLibrary, ConsultasMoviestorage ms_modelo) {
+    public Moviestorage_controlador(Frm_Login frm_Login, Frm_FormNewUsers frm_formNewUsers, Frm_MovieLibrary frm_MovieLibrary, Frm_UserProfile frm_UserProfile, ConsultasMoviestorage ms_modelo) {
         this.frm_login = frm_Login;
         this.frm_formNewUsers = frm_formNewUsers;
+        this.frm_movielibrary = frm_MovieLibrary;
+        this.frm_UserProfile = frm_UserProfile;
         this.ms_modelo = ms_modelo;
         this.frm_login.btn_signIn.addActionListener(this);
         this.frm_login.txt_Username.addActionListener(this);
         this.frm_login.pf_password.addActionListener(this);
-        this.frm_formNewUsers.btn_Submit.addActionListener(this);
-        this.frm_formNewUsers.txt_name.addActionListener(this);
-        this.frm_formNewUsers.txt_lastname.addActionListener(this);
-        this.frm_formNewUsers.txt_username.addActionListener(this);
-        this.frm_formNewUsers.txt_passwordField.addActionListener(this);
-
         this.frm_login.jl_singup.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -40,6 +39,11 @@ public class Moviestorage_controlador implements ActionListener {
                 frm_formNewUsers.setVisible(true);
             }
         });
+        this.frm_formNewUsers.btn_Submit.addActionListener(this);
+        this.frm_formNewUsers.txt_name.addActionListener(this);
+        this.frm_formNewUsers.txt_lastname.addActionListener(this);
+        this.frm_formNewUsers.txt_username.addActionListener(this);
+        this.frm_formNewUsers.txt_passwordField.addActionListener(this);
         this.frm_formNewUsers.lbl_SingIn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -47,12 +51,77 @@ public class Moviestorage_controlador implements ActionListener {
                 frm_login.setVisible(true);
             }
         });
+        this.frm_movielibrary.lbl_btnDerecho.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (contador <= 0) {
+                    contador = 12;
+                } else {
+                    contador--;
+                }
+                frm_movielibrary.lbl_Poster.setIcon(Imagen[contador]);
+            }
+        });
+        this.frm_movielibrary.lbl_btnIzquierdo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (contador >= 12) {
+                    contador = 0;
+                } else {
+                    contador++;
+                }
+                frm_movielibrary.lbl_Poster.setIcon(Imagen[contador]);
+            }
+        });
+        this.frm_movielibrary.lbl_userIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                frm_movielibrary.dispose();
+                Map<String, String> userData = ms_modelo.getUserData(ms_modelo.getUserId());
+                if (userData != null) {
+                    String password = userData.get("password");
+                    String passwordMask = new String(new char[password.length()]).replace("\0", "*");
+                    frm_UserProfile.lbl_username.setText("Username: " + userData.get("username"));
+                    frm_UserProfile.lbl_password.setText("Password: " + passwordMask);
+                    frm_UserProfile.lbl_name.setText("Name: " + userData.get("nombre"));
+                    frm_UserProfile.lbl_lastname.setText("LastName: " + userData.get("apellido"));
+                    frm_UserProfile.txta_biografi.setText("Biografi: " + userData.get("biografia"));
+                } else {
+                    JOptionPane.showMessageDialog(null, "User not found");
+                }
+                frm_UserProfile.setVisible(true);
+            }
+        });
+        this.frm_movielibrary.btn_singOut.addActionListener(this);
+        this.frm_UserProfile.lbl_home.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                frm_UserProfile.dispose();
+                enableUser();
+                frm_UserProfile.btn_updateDate.setEnabled(true);
+                frm_movielibrary.setVisible(true);
+            }
+        });
+        this.frm_UserProfile.btn_update.addActionListener(this);
+        this.frm_UserProfile.btn_updateDate.addActionListener(this);
+        this.frm_UserProfile.btn_cancel.addActionListener(this);
+        this.frm_UserProfile.txt_lastaname.addActionListener(this);
+        this.frm_UserProfile.txt_name.addActionListener(this);
+        this.frm_UserProfile.txt_username.addActionListener(this);
     }
 
     public void iniciarMovieStorage() {
         frm_login.setTitle("Movie Storage");
         frm_login.setLocationRelativeTo(null);
         frm_formNewUsers.setLocationRelativeTo(null);
+        frm_formNewUsers.setTitle("Registro");
+        frm_movielibrary.setTitle("Library");
+        frm_movielibrary.setLocationRelativeTo(null);
+        frm_movielibrary.lbl_userIcon.setToolTipText("Profile");
+        frm_UserProfile.setTitle("User Profile");
+        frm_UserProfile.setLocationRelativeTo(null);
+        enableUser();
+        carusel();
     }
 
     @Override
@@ -66,8 +135,10 @@ public class Moviestorage_controlador implements ActionListener {
                 ms_modelo.setUserName(username.trim());
                 ms_modelo.setPassword(new String(password));
                 if (ms_modelo.validUser(ms_modelo)) {
+                    ms_modelo.setUserId(ms_modelo.getUserIdFromDatabase(username.trim()));
+                    frm_login.pf_password.setText("");
+                    frm_login.txt_Username.setText("");
                     frm_login.dispose();
-                    frm_movielibrary = new Frm_MovieLibrary();
                     frm_movielibrary.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(frm_login, "Invalid username or password");
@@ -79,7 +150,8 @@ public class Moviestorage_controlador implements ActionListener {
             String lastname = frm_formNewUsers.txt_lastname.getText();
             String username = frm_formNewUsers.txt_username.getText();
             char[] password = frm_formNewUsers.txt_passwordField.getPassword();
-            if (name.trim().isEmpty() || lastname.trim().isEmpty() || username.trim().isEmpty() || password.length == 0) {
+            String biografi = frm_formNewUsers.txta_biografi.getText();
+            if (name.trim().isEmpty() || lastname.trim().isEmpty() || username.trim().isEmpty() || biografi.trim().isEmpty() || password.length == 0) {
                 JOptionPane.showMessageDialog(frm_formNewUsers, "All camps necesarry");
             } else {
                 ms_modelo.setUserName(frm_formNewUsers.txt_username.getText().trim());
@@ -99,7 +171,66 @@ public class Moviestorage_controlador implements ActionListener {
                     }
                 }
             }
+        } else if (e.getSource() == frm_movielibrary.btn_singOut) {
+            frm_movielibrary.dispose();
+            frm_login.setVisible(true);
+        } else if (e.getSource() == frm_UserProfile.btn_updateDate) {
+            frm_UserProfile.btn_updateDate.setEnabled(false);
+            frm_UserProfile.txt_username.requestFocus();
+            frm_UserProfile.txt_lastaname.setEnabled(true);
+            frm_UserProfile.txt_name.setEnabled(true);
+            frm_UserProfile.txt_username.setEnabled(true);
+            frm_UserProfile.txta_ubiografi.setEnabled(true);
+            frm_UserProfile.pf_pasword.setEnabled(true);
+            frm_UserProfile.btn_update.setEnabled(true);
+            frm_UserProfile.btn_cancel.setEnabled(true);
+        } else if (e.getSource() == frm_UserProfile.btn_cancel) {
+            frm_UserProfile.btn_updateDate.setEnabled(true);
+            enableUser();
+        } else if (e.getSource() == frm_UserProfile.btn_update) {
+            String nuevoUsername = frm_UserProfile.txt_username.getText().trim();
+            String nuevaContrasena = new String(frm_UserProfile.pf_pasword.getPassword());
+            String nuevaBiografia = frm_UserProfile.txta_ubiografi.getText().trim();
+            String nuevoNombre = frm_UserProfile.txt_name.getText().trim();
+            String nuevoApellido = frm_UserProfile.txt_lastaname.getText().trim();
+            int userId = ms_modelo.getUserId(); 
+            JOptionPane.showMessageDialog(null, userId);
+            ms_modelo.setUserName(nuevoUsername);
+            ms_modelo.setPassword(nuevaContrasena);
+            ms_modelo.setBiografia(nuevaBiografia);
+            ms_modelo.setName(nuevoNombre);
+            ms_modelo.setLastname(nuevoApellido);
+            ms_modelo.setUserId(userId);
+            if (ms_modelo.actualizar(ms_modelo)) {
+                JOptionPane.showMessageDialog(frm_UserProfile, "User updated successfully");
+                frm_UserProfile.txt_lastaname.setText("");
+                frm_UserProfile.pf_pasword.setText("");
+                frm_UserProfile.txt_name.setText("");
+                frm_UserProfile.txt_username.setText("");
+                frm_UserProfile.txta_ubiografi.setText("");
+                enableUser();
+            } else {
+                JOptionPane.showMessageDialog(frm_UserProfile, "User update failed");
+            }
         }
+    }
+
+    public void carusel() {
+        for (int i = 0; i < 13; i++) {
+            Imagen[i] = new ImageIcon(getClass().getResource("/Resources/image" + i + ".png"));
+            contador++;
+        }
+        frm_movielibrary.lbl_Poster.setIcon(Imagen[0]);
+    }
+
+    public void enableUser() {
+        frm_UserProfile.txt_name.setEnabled(false);
+        frm_UserProfile.txt_username.setEnabled(false);
+        frm_UserProfile.txta_ubiografi.setEnabled(false);
+        frm_UserProfile.txt_lastaname.setEnabled(false);
+        frm_UserProfile.pf_pasword.setEnabled(false);
+        frm_UserProfile.btn_update.setEnabled(false);
+        frm_UserProfile.btn_cancel.setEnabled(false);
     }
 
 }

@@ -17,7 +17,7 @@ public class Frm_Login extends javax.swing.JFrame {
 
     @Override
     public Image getIconImage(){
-        Image retvalue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("Vista/Resource/icon.png"));
+        Image retvalue = Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemResource("vista/Resources/icon.png"));
         return retvalue;
     }
     
@@ -62,7 +62,7 @@ public class Frm_Login extends javax.swing.JFrame {
         });
         Main.add(btn_exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 50, 50));
 
-        img_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resource/usuario.png"))); // NOI18N
+        img_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resources/usuario.png"))); // NOI18N
         Main.add(img_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, -1, -1));
 
         sidebar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -112,12 +112,14 @@ public class Frm_Login extends javax.swing.JFrame {
 
         btn_signIn.setBackground(new java.awt.Color(59, 59, 79));
         btn_signIn.setForeground(new java.awt.Color(245, 246, 247));
+        btn_signIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resources/iniciar-sesion.png"))); // NOI18N
         btn_signIn.setText("Sing In");
         btn_signIn.setBorder(null);
         Main.add(btn_signIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 414, 120, 40));
 
         pf_password.setBackground(new java.awt.Color(10, 10, 35));
         pf_password.setForeground(new java.awt.Color(245, 246, 247));
+        pf_password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         pf_password.setBorder(null);
         Main.add(pf_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 260, 50));
 
