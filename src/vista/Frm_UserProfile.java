@@ -91,22 +91,18 @@ public class Frm_UserProfile extends javax.swing.JFrame {
 
         lbl_username.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         lbl_username.setForeground(new java.awt.Color(245, 246, 247));
-        lbl_username.setBorder(new javax.swing.border.MatteBorder(null));
         jPanel1.add(lbl_username, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 180, 20));
 
         lbl_password.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         lbl_password.setForeground(new java.awt.Color(245, 246, 247));
-        lbl_password.setBorder(new javax.swing.border.MatteBorder(null));
         jPanel1.add(lbl_password, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 180, 30));
 
         lbl_name.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         lbl_name.setForeground(new java.awt.Color(245, 246, 247));
-        lbl_name.setBorder(new javax.swing.border.MatteBorder(null));
         jPanel1.add(lbl_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 180, 20));
 
         lbl_lastname.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         lbl_lastname.setForeground(new java.awt.Color(245, 246, 247));
-        lbl_lastname.setBorder(new javax.swing.border.MatteBorder(null));
         jPanel1.add(lbl_lastname, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 180, 20));
 
         btn_updateDate.setBackground(new java.awt.Color(59, 59, 79));
@@ -127,7 +123,7 @@ public class Frm_UserProfile extends javax.swing.JFrame {
         txta_biografi.setLineWrap(true);
         txta_biografi.setRows(2);
         txta_biografi.setWrapStyleWord(true);
-        txta_biografi.setBorder(new javax.swing.border.MatteBorder(null));
+        txta_biografi.setBorder(null);
         jScrollPane1.setViewportView(txta_biografi);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, 180, 50));

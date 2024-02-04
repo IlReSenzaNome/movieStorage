@@ -37,6 +37,8 @@ public class Frm_MovieLibrary extends javax.swing.JFrame {
         lbl_userIcon = new javax.swing.JLabel();
         lbl_Poster = new javax.swing.JLabel();
         btn_singOut = new javax.swing.JButton();
+        lbl_addFilm = new javax.swing.JLabel();
+        lbl_librarylist = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
@@ -74,19 +76,19 @@ public class Frm_MovieLibrary extends javax.swing.JFrame {
                 sidebarMousePressed(evt);
             }
         });
-        MovieLlibrary.add(sidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 50));
+        MovieLlibrary.add(sidebar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 50));
 
         lbl_btnDerecho.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         lbl_btnDerecho.setForeground(new java.awt.Color(245, 246, 247));
         lbl_btnDerecho.setText(">");
         lbl_btnDerecho.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        MovieLlibrary.add(lbl_btnDerecho, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 50, 30, 340));
+        MovieLlibrary.add(lbl_btnDerecho, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 50, 30, 310));
 
         lbl_btnIzquierdo.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
         lbl_btnIzquierdo.setForeground(new java.awt.Color(245, 246, 247));
         lbl_btnIzquierdo.setText("<");
         lbl_btnIzquierdo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        MovieLlibrary.add(lbl_btnIzquierdo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, 330));
+        MovieLlibrary.add(lbl_btnIzquierdo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, -1, 300));
 
         lbl_userIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resources/icono-de-perfil.png"))); // NOI18N
         lbl_userIcon.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -101,6 +103,19 @@ public class Frm_MovieLibrary extends javax.swing.JFrame {
         btn_singOut.setText("Sing Out");
         btn_singOut.setBorder(null);
         MovieLlibrary.add(btn_singOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 400, 100, 40));
+
+        lbl_addFilm.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        lbl_addFilm.setForeground(new java.awt.Color(245, 246, 247));
+        lbl_addFilm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_addFilm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resources/signo-de-mas.png"))); // NOI18N
+        lbl_addFilm.setText("Add Library");
+        lbl_addFilm.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        MovieLlibrary.add(lbl_addFilm, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 410, -1, -1));
+
+        lbl_librarylist.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_librarylist.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resources/lista.png"))); // NOI18N
+        lbl_librarylist.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        MovieLlibrary.add(lbl_librarylist, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 0, 50, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -195,8 +210,10 @@ public class Frm_MovieLibrary extends javax.swing.JFrame {
     private javax.swing.JLabel btn_exit;
     public javax.swing.JButton btn_singOut;
     public javax.swing.JLabel lbl_Poster;
+    public javax.swing.JLabel lbl_addFilm;
     public javax.swing.JLabel lbl_btnDerecho;
     public javax.swing.JLabel lbl_btnIzquierdo;
+    public javax.swing.JLabel lbl_librarylist;
     public javax.swing.JLabel lbl_userIcon;
     private javax.swing.JLabel sidebar;
     // End of variables declaration//GEN-END:variables

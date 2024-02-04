@@ -13,8 +13,41 @@ import vista.Frm_Login;
 
 public class ConsultasMoviestorage extends Conexion {
 
-    private String userName, password, name, lastname, biografia;
-    private int userId;
+    private String userName, password, name, lastname, biografia, comentario, favorito;
+    private int userId, filmid;
+    private float calificacion;
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    public String getFavorito() {
+        return favorito;
+    }
+
+    public void setFavorito(String favorito) {
+        this.favorito = favorito;
+    }
+
+    public float getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(float calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public int getFilmid() {
+        return filmid;
+    }
+
+    public void setFilmid(int filmid) {
+        this.filmid = filmid;
+    }
 
     public int getUserId() {
         return userId;
@@ -248,12 +281,114 @@ public class ConsultasMoviestorage extends Conexion {
         String sql = "UPDATE usuarios SET username = ?, contrasena = ?, biografia = ?, nombre = ?, apellido = ? WHERE idusuarios = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, userName.trim());
-            ps.setString(2, password.trim());
-            ps.setString(3, biografia.trim());
-            ps.setString(4, name.trim());
-            ps.setString(5, lastname.trim());
+            ps.setString(1, ms.getUserName().trim());
+            ps.setString(2, ms.getPassword().trim());
+            ps.setString(3, ms.getBiografia().trim());
+            ps.setString(4, ms.getName().trim());
+            ps.setString(5, ms.getLastname().trim());
             ps.setInt(6, userId);
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println("EX" + e);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+    }
+
+    public Map<String, String> getFilmData(int filmId) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = conectar();
+        String sql = "SELECT * FROM pelicula WHERE idpelicula = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, filmId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Map<String, String> FilmData = new HashMap<>();
+                FilmData.put("nombre", rs.getString("nombre"));
+                FilmData.put("sinopsis", rs.getString("sinopsis"));
+                FilmData.put("calificacion", rs.getString("calificacion"));
+                return FilmData;
+            }
+        } catch (SQLException e) {
+            System.out.println("EX" + e);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+        return null; // return null if user not found
+    }
+
+    public boolean calificar(ConsultasMoviestorage ms, int filmId) {
+        PreparedStatement ps = null;
+        Connection con = conectar();
+        String sql = "insert into biblioteca(idpelicula,idusuarios,calificacionusuario,comentario,favorita) values (?,?,?,?,?)";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, filmId); // use filmId instead of filmid
+            ps.setInt(2, ms.getUserId()); // assuming getUserId() returns an integer
+            ps.setFloat(3, ms.getCalificacion()); // setFloat instead of setString
+            ps.setString(4, ms.getComentario().trim());
+            ps.setString(5, ms.getFavorito().trim()); // setString instead of setFloat
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println("EX" + e);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+
+    }
+
+    public boolean usuarioYaCalifico(ConsultasMoviestorage ms, int filmId) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = conectar();
+        String sql = "SELECT * FROM biblioteca WHERE idusuarios = ? AND idpelicula = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, ms.getUserId());
+            ps.setInt(2, filmId);
+            rs = ps.executeQuery();
+            return rs.next(); // return true if a row was found
+        } catch (Exception e) {
+            System.out.println("EX" + e);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+    }
+
+    public boolean actualizarCalificacion(ConsultasMoviestorage ms, int filmId, float nuevaCalificacion) {
+        PreparedStatement ps = null;
+        Connection con = conectar();
+        String sql = "UPDATE biblioteca SET calificacionusuario = ?, comentario = ?, favorita = ? WHERE idusuarios = ? AND idpelicula = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setFloat(1, nuevaCalificacion);
+            ps.setString(2, ms.getComentario());
+            ps.setString(3, ms.getFavorito());
+            ps.setInt(4, ms.getUserId());
+            ps.setInt(5, filmId);
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
