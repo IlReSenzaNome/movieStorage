@@ -114,6 +114,7 @@ public class Frm_MovieLibrary extends javax.swing.JFrame {
 
         lbl_librarylist.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_librarylist.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/Resources/lista.png"))); // NOI18N
+        lbl_librarylist.setToolTipText("library");
         lbl_librarylist.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         MovieLlibrary.add(lbl_librarylist, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 0, 50, 50));
 

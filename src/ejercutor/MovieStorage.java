@@ -14,7 +14,8 @@ public class MovieStorage {
         Frm_MovieLibrary frm_movieLibrary = new Frm_MovieLibrary();
         Frm_UserProfile frm_UserProfile = new Frm_UserProfile();
         Frm_NotesFilms frm_NotesFilms = new Frm_NotesFilms();
-        Moviestorage_controlador ms_controlador = new Moviestorage_controlador(frm_login, frm_formnewusers, frm_movieLibrary, frm_UserProfile,frm_NotesFilms, ms_consultas);
+        Frm_library frm_library = new Frm_library();
+        Moviestorage_controlador ms_controlador = new Moviestorage_controlador(frm_login, frm_formnewusers, frm_movieLibrary, frm_UserProfile, frm_NotesFilms, frm_library, ms_consultas);
         ms_controlador.iniciarMovieStorage();
         frm_login.setVisible(true);
     }

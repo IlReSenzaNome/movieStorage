@@ -2,6 +2,7 @@ package modelo;
 
 import com.mysql.cj.jdbc.PreparedStatementWrapper;
 import com.mysql.cj.jdbc.result.ResultSetFactory;
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
 import com.mysql.cj.xdevapi.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,13 +10,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import vista.Frm_Login;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ConsultasMoviestorage extends Conexion {
 
     private String userName, password, name, lastname, biografia, comentario, favorito;
-    private int userId, filmid;
+    private int userId, filmid, idbilioteca;
     private float calificacion;
+
+    public int getIdbilioteca() {
+        return idbilioteca;
+    }
+
+    public void setIdbilioteca(int idbilioteca) {
+        this.idbilioteca = idbilioteca;
+    }
 
     public String getComentario() {
         return comentario;
@@ -390,6 +400,68 @@ public class ConsultasMoviestorage extends Conexion {
             ps.setInt(4, ms.getUserId());
             ps.setInt(5, filmId);
             ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println("EX" + e);
+            return false;
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+    }
+
+    public void listarBiblioteca(DefaultTableModel modelo, ConsultasMoviestorage ms) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = conectar();
+        String sql = "SELECT biblioteca.idpelicula, pelicula.nombre, biblioteca.favorita, biblioteca.comentario, biblioteca.calificacionusuario FROM biblioteca INNER JOIN pelicula ON biblioteca.idpelicula = pelicula.idpelicula WHERE biblioteca.idusuarios = ?";
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, ms.getUserId());
+            rs = ps.executeQuery();
+
+            ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
+            int cantidadColumnas = rsMd.getColumnCount();
+
+            // Define las columnas del modelo
+            modelo.addColumn("ID Pelicula");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Favorita");
+            modelo.addColumn("Comentario");
+            modelo.addColumn("Calificacion");
+
+            // Llena el modelo con las filas de la consulta
+            while (rs.next()) {
+                Object[] filas = new Object[cantidadColumnas];
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(filas);
+            }
+        } catch (SQLException e) {
+            System.out.println("EX" + e);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("EX" + e);
+            }
+        }
+    }
+
+    public boolean eliminarCalificacion(int idBiblioteca, int idUsuario) {
+        PreparedStatement ps = null;
+        Connection con = conectar();
+        String sql = "DELETE FROM biblioteca WHERE idbiblioteca = ? AND idusuarios = ?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, idBiblioteca);
+            ps.setInt(2, idUsuario);
+            ps.execute();
             return true;
         } catch (Exception e) {
             System.out.println("EX" + e);
