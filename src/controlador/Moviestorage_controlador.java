@@ -347,16 +347,13 @@ public class Moviestorage_controlador implements ActionListener {
                 }
             }
         } else if (e.getSource() == frm_library.btn_delete) {
-            String idbiblioteca = frm_library.txt_idbiliotecca.getText().trim();
-            String idusuario = frm_library.txt_idusuario.getText().trim();
-            if (idbiblioteca.trim().isEmpty() || idusuario.trim().isEmpty()) {
+            String idpelicula= frm_library.txt_idPelicula.getText().trim();
+            if (idpelicula.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(frm_library, "Alll camps necesarry");
             } else {
-                int id = Integer.parseInt(idusuario);
-                int idb = Integer.parseInt(idbiblioteca);
+                int id = Integer.parseInt(idpelicula);
                 ms_modelo.setUserId(id);
-                ms_modelo.setIdbilioteca(idb);
-                if (ms_modelo.eliminarCalificacion(idb, id)) {
+                if (ms_modelo.eliminarCalificacion(id)) {
                     JOptionPane.showMessageDialog(frm_library, "Qualification delete");
                     limparTabla();
                     ms_modelo.listarBiblioteca(frm_library.modelo, ms_modelo);

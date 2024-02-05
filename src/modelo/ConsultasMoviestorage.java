@@ -453,14 +453,13 @@ public class ConsultasMoviestorage extends Conexion {
         }
     }
 
-    public boolean eliminarCalificacion(int idBiblioteca, int idUsuario) {
+    public boolean eliminarCalificacion(int idpelicula) {
         PreparedStatement ps = null;
         Connection con = conectar();
-        String sql = "DELETE FROM biblioteca WHERE idbiblioteca = ? AND idusuarios = ?";
+        String sql = "DELETE FROM biblioteca WHERE idpelicula = ?";
         try {
             ps = con.prepareStatement(sql);
-            ps.setInt(1, idBiblioteca);
-            ps.setInt(2, idUsuario);
+            ps.setInt(1, idpelicula);
             ps.execute();
             return true;
         } catch (Exception e) {

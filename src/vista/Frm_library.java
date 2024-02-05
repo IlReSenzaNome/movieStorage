@@ -43,9 +43,7 @@ public class Frm_library extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_biblioteca = new javax.swing.JTable();
         btn_delete = new javax.swing.JButton();
-        txt_idbiliotecca = new javax.swing.JTextField();
-        txt_idusuario = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        txt_idPelicula = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -117,23 +115,13 @@ public class Frm_library extends javax.swing.JFrame {
         btn_delete.setBorder(null);
         jPanel1.add(btn_delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 290, 100, 40));
 
-        txt_idbiliotecca.setBackground(new java.awt.Color(10, 10, 35));
-        txt_idbiliotecca.setForeground(new java.awt.Color(245, 246, 247));
-        txt_idbiliotecca.setBorder(null);
-        jPanel1.add(txt_idbiliotecca, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 100, 20));
-
-        txt_idusuario.setBackground(new java.awt.Color(10, 10, 35));
-        txt_idusuario.setForeground(new java.awt.Color(245, 246, 247));
-        txt_idusuario.setBorder(null);
-        jPanel1.add(txt_idusuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 310, 100, 20));
-
-        jLabel1.setForeground(new java.awt.Color(245, 246, 247));
-        jLabel1.setText("idUsuario");
-        jLabel1.setToolTipText("");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 310, -1, -1));
+        txt_idPelicula.setBackground(new java.awt.Color(10, 10, 35));
+        txt_idPelicula.setForeground(new java.awt.Color(245, 246, 247));
+        txt_idPelicula.setBorder(null);
+        jPanel1.add(txt_idPelicula, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 100, 20));
 
         jLabel2.setForeground(new java.awt.Color(245, 246, 247));
-        jLabel2.setText("Idbiblioteca");
+        jLabel2.setText("IdPelicula");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 280, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -214,14 +202,12 @@ public class Frm_library extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btn_delete;
     private javax.swing.JLabel btn_exit;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JLabel lbl_goBack;
     private javax.swing.JLabel sidebar;
     public javax.swing.JTable tbl_biblioteca;
-    public javax.swing.JTextField txt_idbiliotecca;
-    public javax.swing.JTextField txt_idusuario;
+    public javax.swing.JTextField txt_idPelicula;
     // End of variables declaration//GEN-END:variables
 }
